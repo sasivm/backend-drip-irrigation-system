@@ -9,7 +9,7 @@ const miLandRecSchema = new mangoose.Schema({
 
 const surveyCropRecSchema = new mangoose.Schema({
     surveyNo: { type: Array, required: true, min: 1 },
-    Subdivision: { type: Array, required: true, min: 1 },
+    subDivisionNo: { type: Array, required: true, min: 1 },
     totalArea: { type: Number, required: true, min: 0 },
     appliedArea: { type: Number, required: true, min: 0 },
     crop: { type: String, required: true },
@@ -60,7 +60,7 @@ function validateMultiCutomerRecordRegistartion(custRecData) {
 
     const surveyCropJoiSchema = Joi.object().keys({
         surveyNo: Joi.array().min(1).required(),
-        Subdivision: Joi.array().min(1).required(),
+        subDivisionNo: Joi.array().min(1).required(),
         totalArea: Joi.number().min(0).required(),
         appliedArea: Joi.number().min(0).required(),
 
