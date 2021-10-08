@@ -31,7 +31,7 @@ const custSearchSchema = new mangoose.Schema({
     village: { type: String, required: true },
 });
 const CustSearch = mangoose.model('customers', custSearchSchema)
-const Customer = mangoose.model('customers', custSchema);
+// const Customer = mangoose.model('customers', custSchema);
 
 async function updateCustomerDetails(customerRec) {
     try {
