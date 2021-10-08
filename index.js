@@ -4,6 +4,7 @@ const app = express();
 const { validateCustomer } = require('./models/multi-customer');
 const customers = require('./routes/bulk-register');
 const cutomerRoute = require('./routes/customer');
+const searchCustomersRoute = require('./routes/searchCustomers');
 
 const mangoose = require('mongoose');
 
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 
 app.use('/bulkRegister', customers);
 app.use('/customer', cutomerRoute);
+app.use('/SearchCustomers', searchCustomersRoute);
 
 const applicantRecStruct = {
     applicationId: '',
