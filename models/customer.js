@@ -22,16 +22,8 @@ const custSchema = new mangoose.Schema({
     landOwnership: { type: String, required: true },
     gender: { type: String, default: 'M' }
 });
-const custSearchSchema = new mangoose.Schema({
-    applicationId: { type: String, required: true },
-    block: { type: String, required: true },
-    department: { type: String, required: true },
-    farmerName: { type: String, required: true },
-    farmerType: { type: String, required: true },
-    village: { type: String, required: true },
-});
-const CustSearch = mangoose.model('customers', custSearchSchema)
-// const Customer = mangoose.model('customers', custSchema);
+
+const Customer = mangoose.model('customers', custSchema);
 
 async function updateCustomerDetails(customerRec) {
     try {
@@ -91,5 +83,6 @@ function validateCustomerUpdation(custRecord) {
 module.exports = {
     getCustomerDetails,
     updateCustomerDetails,
-    validateCustomerUpdation
+    validateCustomerUpdation,
+    Customer
 }
