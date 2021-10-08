@@ -34,9 +34,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/bulkRegister', customers);
-app.use('/customer', cutomerRoute);
-app.use('/SearchCustomers', searchCustomersRoute);
+app.use('/api/bulkRegister', customers);
+app.use('/api/customer', cutomerRoute);
+app.use('/api/SearchCustomers', searchCustomersRoute);
 
 const applicantRecStruct = {
     applicationId: '',
