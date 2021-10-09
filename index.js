@@ -8,7 +8,7 @@ const searchCustomersRoute = require('./routes/searchCustomers');
 
 const mangoose = require('mongoose');
 
-mangoose.connect('mongodb://localhost/drip')
+mangoose.connect('mongodb://ec2-52-15-160-38.us-east-2.compute.amazonaws.com/drip')
     .then(() => console.log('Mango DB Connected...'))
     .catch(err => console.log('Could not connect to mangooDB...'));
 
@@ -18,7 +18,7 @@ app.use(express.json()); // to parse req body everytime
 
 app.use((req, res, next) => {
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
