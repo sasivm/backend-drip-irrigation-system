@@ -1,18 +1,24 @@
 const express = require('express');
 const app = express();
 
-const { validateCustomer } = require('./models/multi-customer');
 const customers = require('./routes/bulk-register');
 const cutomerRoute = require('./routes/customer');
 const searchCustomersRoute = require('./routes/searchCustomers');
 
 const mangoose = require('mongoose');
 
-mangoose.connect('mongodb://ec2-52-15-160-38.us-east-2.compute.amazonaws.com/drip')
-    .then(() => console.log('Mango DB Connected...'))
-    .catch(err => console.log('Could not connect to mangooDB...'));
+/* For testing perpose only */
+DOMAIN_NAME = 'mongodb://0.0.0.0:27017/';
+DB_NAME = 'test';
+PORT = 3000;
+MONGODB_URI = DOMAIN_NAME + DB_NAME;
 
-const port = 3000;
+mangoose.connect(MONGODB_URI)
+    .then(() => {
+        console.log('Mango DB Connected...');
+        console.log('URI is : ', MONGODB_URI);
+    })
+    .catch(err => console.log('Could not connect to mongoDB... error-info : ', err));
 
 app.use(express.json()); // to parse req body everytime
 
@@ -38,65 +44,8 @@ app.use('/api/bulkRegister', customers);
 app.use('/api/customer', cutomerRoute);
 app.use('/api/SearchCustomers', searchCustomersRoute);
 
-const applicantRecStruct = {
-    applicationId: '',
-    block: '',
-    department: '',
-    district: '',
-    farmerName: '',
-    farmerType: '',
-    gender: 1,
-    miCompany: '',
-    mobileNo: 0,
-    socialStatus: '',
-    village: ''
-};
-
-const applicantDetails = {
-    applicationId: "A-TPR-gdm-4121435605-2021-22",
-    block: "Gudimangalam",
-    department: "Agriculture",
-    district: "Tiruppur",
-    farmerName: "SAKTHIVEL AND PECHIAMMAL",
-    farmerType: "SF / MF",
-    gender: 1,
-    miCompany: "Vedanta Irrigation system Pvt Ltd.",
-    mobileNo: 6379768677,
-    socialStatus: "Other Caste",
-    village: "Thottampatti",
-    department: '',
-    irrigationType: '',
-    surveyNo: [],
-    totalArea: '',
-    appliedArea: '',
-};
-
-const applicantMILandDetails = {
-    //mi land
-    department: '',
-    irrigationType: '',
-    //survey
-    surveyNo: '',
-    totalArea: '',
-    appliedArea: '',
-    //crop
-    crop: '',
-    spacing: ''
-};
-
-app.post('/register', (req, res) => {
-    const applicantData = req.body;
-    const validationRes = validateCustomer(applicantData);
-    if (!validationRes) {
-        res.send('Success...')
-    } else {
-        res.status(400).send(validationRes);
-        return validationRes;
-    }
-});
-
-app.listen(process.env.port || port, () => {
+app.listen(process.env.port || PORT, () => {
     console.log('app listener');
 });
 
-console.log('Web Server is listening at port ' + (process.env.port || port));
+console.log('Web Server is listening at port ', process.env.port, PORT);
