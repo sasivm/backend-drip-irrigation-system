@@ -8,9 +8,10 @@ const searchCustomersRoute = require('./routes/searchCustomers');
 const mangoose = require('mongoose');
 
 /* For testing perpose only */
-DOMAIN_NAME = 'mongodb://0.0.0.0:27017/';
+// DOMAIN_NAME = 'mongodb://0.0.0.0:27017/';
+DOMAIN_NAME = 'secret';
 DB_NAME = 'test';
-PORT = 3000;
+PORT = 5000;
 MONGODB_URI = DOMAIN_NAME + DB_NAME;
 
 mangoose.connect(MONGODB_URI)
@@ -44,8 +45,8 @@ app.use('/api/bulkRegister', customers);
 app.use('/api/customer', cutomerRoute);
 app.use('/api/SearchCustomers', searchCustomersRoute);
 
-app.listen(process.env.port || PORT, () => {
+app.listen(process.env.PORT || PORT, () => {
     console.log('app listener');
 });
 
-console.log('Web Server is listening at port ', process.env.port, PORT);
+console.log('Web Server is listening at port ', process.env.PORT, PORT);
