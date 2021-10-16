@@ -11,7 +11,7 @@ const CUST_ALREADY_EXIST_ERROR_OBJ = {
 };
 
 const MORETHAN_ONE_CUST_ID_FOUND = {
-    message: 'Application id with more than one customer found'
+    message: 'Same application id with more than one customer(s) found'
 };
 
 module.exports = {

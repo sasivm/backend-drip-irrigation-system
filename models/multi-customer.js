@@ -4,7 +4,8 @@ const Constants = require('../util/constant');
 
 const miLandRecSchema = new mangoose.Schema({
     cropType: { type: String, required: true },
-    miType: { type: String, required: true }
+    miType: { type: String, required: true },
+    cropLandType: { type: String, required: false }
 });
 
 const surveyCropRecSchema = new mangoose.Schema({
@@ -107,6 +108,8 @@ const phoneNumValidation = (value, helpers) => {
     }
 };
 
-exports.MultiCustomerRec = MultiCustomerRec;
-exports.validateCustomer = validateMultiCutomerRecordRegistartion;
-exports.createCustomer = createNewCustomer
+module.exports = {
+    MultiCustomerRec: MultiCustomerRec,
+    validateCustomer: validateMultiCutomerRecordRegistartion,
+    createCustomer: createNewCustomer
+}

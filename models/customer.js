@@ -3,27 +3,41 @@ const Joi = require('joi');
 const Constants = require('../util/constant');
 const { MultiCustomerRec } = require('../models/multi-customer');
 
+const miLandSchema = mangoose.Schema({
+    cropLandType: { type: String, required: true }
+});
+
 const custSchema = new mangoose.Schema({
-    applicationId: { type: String, required: true },
-    block: { type: String, required: true },
-    department: { type: String, required: true },
-    district: { type: String, required: true },
-    farmerName: { type: String, required: true },
-    farmerType: { type: String, required: true },
-    gender: { type: String, min: 1, max: 1 },
-    miCompany: { type: String, required: true },
-    mobileNo: { type: String, required: true },
-    socialStatus: { type: String, required: true },
-    village: { type: String, required: true },
+    isCompleted: { type: Boolean, default: false },
 
     // New Fields for updation
     aadhaarNo: { type: String, required: true },
     landOwnSon: { type: String, required: true },
     landOwnership: { type: String, required: true },
-    gender: { type: String, default: 'M' }
+    gender: { type: String, default: 'M' },
+
+    miLandRec: { type: miLandSchema, required: true },
 });
 
 const Customer = mangoose.model('customers', custSchema);
+
+async function updateMILandDetails(customerRec) {
+    try {
+        const resonse = await Customer.findByIdAndUpdate(customerRec._id, {
+            $set: {
+                'miLandRec.cropLandType': customerRec.cropLandType
+            }
+        }, { new: true, upsert: true });
+
+        if (!resonse) {
+            return Promise.reject('Invalid Customer id');
+        }
+        return resonse;
+    } catch (error) {
+        console.log('Error while updting in db... : ', error)
+        return Promise.reject(error.message);
+    }
+}
 
 async function updateCustomerDetails(customerRec) {
     try {
@@ -32,7 +46,8 @@ async function updateCustomerDetails(customerRec) {
                 aadhaarNo: customerRec.aadhaarNo,
                 landOwnSon: customerRec.landOwnSon,
                 landOwnership: customerRec.landOwnership,
-                gender: customerRec.gender
+                gender: customerRec.gender,
+                isCompleted: true
             }
         }, { new: true });
 
@@ -41,6 +56,7 @@ async function updateCustomerDetails(customerRec) {
         }
         return resonse;
     } catch (error) {
+        console.log('Error while updting in db... : ', error)
         return Promise.reject(error.message);
     }
 }
@@ -72,7 +88,7 @@ function validateCustomerUpdation(custRecord) {
     const { error } = customerSchema.validate(custRecord);
 
     if (error) {
-        console.log('... Error Ocuured...');
+        console.log('... Error Ocuured while JOI validation ...');
         console.log(error.message);
         return error.message;
     }
@@ -84,5 +100,6 @@ module.exports = {
     getCustomerDetails,
     updateCustomerDetails,
     validateCustomerUpdation,
-    Customer
+    Customer,
+    updateMILandDetails
 }

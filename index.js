@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const customers = require('./routes/bulk-register');
+const bulkRegisterRoute = require('./routes/bulk-register');
 const cutomerRoute = require('./routes/customer');
 const searchCustomersRoute = require('./routes/searchCustomers');
 
@@ -9,10 +9,11 @@ const mangoose = require('mongoose');
 
 /* For testing perpose only */
 // DOMAIN_NAME = 'mongodb://0.0.0.0:27017/';
-DOMAIN_NAME = 'secret';
+DOMAIN_NAME = 'mongodb+srv://sasisk:sasi66@cluster0.gtfir.mongodb.net/';
 DB_NAME = 'test';
+DOAMIN_EXTRAS = '?retryWrites=true&w=majority'
 PORT = 5000;
-MONGODB_URI = DOMAIN_NAME + DB_NAME;
+MONGODB_URI = DOMAIN_NAME + DB_NAME + DOAMIN_EXTRAS;
 
 mangoose.connect(MONGODB_URI)
     .then(() => {
@@ -41,7 +42,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/bulkRegister', customers);
+app.use('/api/bulkRegister', bulkRegisterRoute);
 app.use('/api/customer', cutomerRoute);
 app.use('/api/SearchCustomers', searchCustomersRoute);
 

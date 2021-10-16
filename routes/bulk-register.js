@@ -54,7 +54,7 @@ router.post('/', async (req, res, next) => {
         if (errorReason) {
             resposeJson.message = errorReason;
             resposeJson.isSuccess = false;
-            resposeJson.invalidRecordAt = i || 1;
+            resposeJson.invalidRecordAt = (i + 1) || 1;
             return res.json(resposeJson);
         }
 
@@ -69,8 +69,7 @@ router.post('/', async (req, res, next) => {
                 console.log(error.message, 'Rec at ', k);
                 resposeJson.isSuccess = false;
                 resposeJson.invalidRecordAt = k + 1;
-                res.json(resposeJson);
-                return;
+                return res.json(resposeJson);
             }
         }
 

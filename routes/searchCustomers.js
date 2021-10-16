@@ -9,7 +9,6 @@ router.post('/', async (req, res) => {
         isSuccess: true,
         custRec: []
     };
-
     try {
         const searchReq = req.body;
         if (searchReq) {
@@ -50,7 +49,9 @@ router.post('/', async (req, res) => {
         }
     } catch (error) {
         console.log('cust srch outer catch');
-        return res.status(400).json(error);
+        resposeJson.isSuccess = false;
+        resposeJson.message = error
+        return res.status(400).json(resposeJson);
     }
 });
 
