@@ -8,8 +8,7 @@ const searchCustomersRoute = require('./routes/searchCustomers');
 const mangoose = require('mongoose');
 
 /* For testing perpose only */
-// DOMAIN_NAME = 'mongodb://0.0.0.0:27017/';
-DOMAIN_NAME = 'mongodb+srv://sasisk:sasi66@cluster0.gtfir.mongodb.net/';
+DOMAIN_NAME = 'mongodb://0.0.0.0:27017/';
 DB_NAME = 'test';
 DOAMIN_EXTRAS = '?retryWrites=true&w=majority'
 PORT = 5000;
