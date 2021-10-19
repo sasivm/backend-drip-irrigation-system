@@ -65,8 +65,8 @@ router.post('/', async (req, res, next) => {
                 const saveRecRes = await createCustomer(validCustRec);
                 console.log(k, 'Record Saved: ', saveRecRes._id);
             } catch (error) {
-                resposeJson.message = error.message;
-                console.log(error.message, 'Rec at ', k);
+                resposeJson.message = error;
+                console.log(error, 'Rec at ', k);
                 resposeJson.isSuccess = false;
                 resposeJson.invalidRecordAt = k + 1;
                 return res.json(resposeJson);

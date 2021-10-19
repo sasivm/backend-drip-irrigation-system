@@ -89,6 +89,7 @@ router.post('/', async (req, res) => {
             const response = await updateCustomerDetails(custRecUpdation);
             resposeJson.message = 'Customer details updated successfully';
             resposeJson.custRec.push(response);
+            console.log('cust rec updated');
             return res.json(resposeJson);
         }
         resposeJson.isSuccess = false;

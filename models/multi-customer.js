@@ -30,7 +30,11 @@ const multCustomerRecSchema = new mangoose.Schema({
     socialStatus: { type: String, required: true },
     village: { type: String, required: true },
     miLandRec: { type: miLandRecSchema, required: true },
-    surveyCropRec: { type: surveyCropRecSchema, required: true }
+    surveyCropRec: { type: surveyCropRecSchema, required: true },
+    createdBy: { type: String, required: true, default: 'sk'},
+    updatedBy: { type: String, default: ''}
+}, {
+    timestamps: true
 });
 
 const MultiCustomerRec = mangoose.model('Customers', multCustomerRecSchema);
@@ -49,6 +53,7 @@ async function createNewCustomer(custDeatilsRec) {
     } catch (error) {
         console.log('Error Stack of Mongo save method');
         console.log(error);
+        console.log('msg ::: ', error.message);
         return Promise.reject(error.message);
     }
 }

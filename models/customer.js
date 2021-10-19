@@ -4,7 +4,9 @@ const Constants = require('../util/constant');
 const { MultiCustomerRec } = require('../models/multi-customer');
 
 const miLandSchema = mangoose.Schema({
-    cropLandType: { type: String, required: true }
+    cropLandType: { type: String, required: true },
+    updatedBy: { type: String, required: true },
+    updatedAt: { type: Date, required: true }
 });
 
 const custSchema = new mangoose.Schema({
@@ -17,6 +19,8 @@ const custSchema = new mangoose.Schema({
     gender: { type: String, default: 'M' },
 
     miLandRec: { type: miLandSchema, required: true },
+    updatedBy: { type: String, required: true },
+    updatedAt: { type: Date, required: true }
 });
 
 const Customer = mangoose.model('customers', custSchema);
@@ -25,7 +29,9 @@ async function updateMILandDetails(customerRec) {
     try {
         const resonse = await Customer.findByIdAndUpdate(customerRec._id, {
             $set: {
-                'miLandRec.cropLandType': customerRec.cropLandType
+                'miLandRec.cropLandType': customerRec.cropLandType,
+                'miLandRec.updatedBy': 'Sasi66',
+                'miLandRec.updatedAt': Date.now()
             }
         }, { new: true, upsert: true });
 
@@ -47,7 +53,9 @@ async function updateCustomerDetails(customerRec) {
                 landOwnSon: customerRec.landOwnSon,
                 landOwnership: customerRec.landOwnership,
                 gender: customerRec.gender,
-                isCompleted: true
+                isCompleted: true,
+                updatedBy: 'Sasi66',
+                updatedAt: Date.now()
             }
         }, { new: true });
 
