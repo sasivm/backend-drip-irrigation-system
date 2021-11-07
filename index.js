@@ -1,9 +1,10 @@
 require('dotenv').config(); // this will set default env file variables to Process env object
 const express = require('express');
 const app = express();
+const cors = require('cors')
 
 const ConnectToMongoose = require('./config/connection-config');
-const headerMiddleware = require('./middleware/response-headers');
+const verifyToken = require('./middleware/auth');
 
 const bulkRegisterRoute = require('./routes/bulk-register');
 const cutomerRoute = require('./routes/customer');
@@ -17,11 +18,11 @@ ConnectToMongoose();
 
 app.use(express.json()); // to parse req body everytime
 
-app.use(headerMiddleware); // sets desired headers in reposen headers
+app.use(cors());
 
-app.use('/api/bulkRegister', bulkRegisterRoute);
-app.use('/api/customer', cutomerRoute);
-app.use('/api/SearchCustomers', searchCustomersRoute);
+app.use('/api/bulkRegister', verifyToken, bulkRegisterRoute);
+app.use('/api/customer', verifyToken, cutomerRoute);
+app.use('/api/SearchCustomers', verifyToken, searchCustomersRoute);
 app.use('/api/auth', authRoute);
 
 const PORT = process.env.APP_PORT;
