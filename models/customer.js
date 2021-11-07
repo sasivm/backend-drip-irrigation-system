@@ -36,7 +36,7 @@ async function updateMILandDetails(customerRec) {
         }, { new: true, upsert: true });
 
         if (!resonse) {
-            return Promise.reject('Invalid Customer id');
+            return Promise.reject(Constants.CUST_ID_INVALID_MESSAGE);
         }
         return resonse;
     } catch (error) {
@@ -60,7 +60,7 @@ async function updateCustomerDetails(customerRec) {
         }, { new: true });
 
         if (!resonse) {
-            return Promise.reject('Invalid Customer id');
+            return Promise.reject(Constants.CUST_ID_INVALID_MESSAGE);
         }
         return resonse;
     } catch (error) {
@@ -74,7 +74,7 @@ async function getCustomerDetails(applicationId) {
         const cusRec = await MultiCustomerRec.find({ applicationId: applicationId });
         if (cusRec && cusRec.length > 1) {
             console.log(cusRec.length, 'Cus found with same id');
-            return Promise.reject(Constants.MANY_CUST_ONE_ID.message);
+            return Promise.reject(Constants.CUST_MORETHAN_ONE_CUSTID);
         }
         return cusRec;
     } catch (error) {

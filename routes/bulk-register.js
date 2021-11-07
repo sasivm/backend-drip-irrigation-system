@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 const { createCustomer, validateCustomer } = require('../models/multi-customer');
-const Constants = require('../util/constant');
+const CONSTANTS = require('../util/constant');
 
 const checkPayloadIsValid = (payload) => {
     if (!Array.isArray(payload)) {
-        return Constants.INVALID_DATA_FORMAT;
+        return CONSTANTS.CUST_FILE_DATA_INVALID;
     } else if (payload.length < 1) {
-        return Constants.NO_CUST_DATA;
+        return CONSTANTS.CUST_FILE_DATA_EMPTY;
     }
 
     return null;
@@ -36,7 +36,7 @@ router.post('/', async (req, res, next) => {
         let errorReason = null; let i = 0;
         for (; i < custDetailsArr.length; i++) {
             const customerRecord = {};
-            for (const field of Constants.CUST_REC_REQ_FIELDS) {
+            for (const field of CONSTANTS.CUST_REC_REQ_FIELDS) {
                 customerRecord[field] = custDetailsArr[i][field];
             }
             const validationRes = validateCustomer(customerRecord);
@@ -74,10 +74,10 @@ router.post('/', async (req, res, next) => {
         }
 
         if (resposeJson.isSuccess) {
-            resposeJson.message = Constants.ALL_REC_SAVED;
+            resposeJson.message = CONSTANTS.CUST_FILE_SAVED_SUCCESS;
             return res.json(resposeJson);
         } else {
-            resposeJson.message = 'Something went wrong - uncaught error';
+            resposeJson.message = CONSTANTS.APP_UNKNOWN_ERROR_MESSAGE;
             console.log(resposeJson.message)
             return res.json(resposeJson);
         }

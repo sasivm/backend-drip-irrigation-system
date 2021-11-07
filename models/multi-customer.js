@@ -18,7 +18,7 @@ const surveyCropRecSchema = new mangoose.Schema({
 });
 
 const multCustomerRecSchema = new mangoose.Schema({
-    applicationId: { type: String, required: true },
+    applicationId: { type: String, required: true, unique: true },
     block: { type: String, required: true },
     department: { type: String, required: true },
     district: { type: String, required: true },
@@ -31,8 +31,8 @@ const multCustomerRecSchema = new mangoose.Schema({
     village: { type: String, required: true },
     miLandRec: { type: miLandRecSchema, required: true },
     surveyCropRec: { type: surveyCropRecSchema, required: true },
-    createdBy: { type: String, required: true, default: 'sk'},
-    updatedBy: { type: String, default: ''}
+    createdBy: { type: String, required: true, default: 'sk' },
+    updatedBy: { type: String, default: '' }
 }, {
     timestamps: true
 });
@@ -46,7 +46,7 @@ async function createNewCustomer(custDeatilsRec) {
 
         if (existCustRec && existCustRec.length > 0) {
             console.log('Cus rec already exist');
-            return Promise.reject(Constants.CUST_ALREADY_EXIST);
+            return Promise.reject(Constants.CUST_EXIST_MESSAGE);
         }
         const res = await cust_rec.save();
         return res;
@@ -109,7 +109,7 @@ const phoneNumValidation = (value, helpers) => {
     if (phoneStr.length === 10 && phoneStr.match(numRegEx)) {
         return value;
     } else {
-        return helpers.error('Phone Number is not valid');
+        return helpers.error(Constants.CUST_PHONE_NO_INVALID_MESSAGE);
     }
 };
 

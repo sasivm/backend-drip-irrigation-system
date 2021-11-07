@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { getCustomerDetails, validateCustomerUpdation, updateCustomerDetails, updateMILandDetails } = require('../models/customer');
-const { MANY_CUST_ONE_ID } = require('../util/constant');
+const CONSTANTS = require('../util/constant');
 
 router.get('/:id', async (req, res, next) => {
     const resposeJson = {
@@ -17,12 +17,12 @@ router.get('/:id', async (req, res, next) => {
             resposeJson.custRec = customerRec;
             if (customerRec.length === 0) {
                 resposeJson.isSuccess = false;
-                resposeJson.message = 'customer id is invalid';
+                resposeJson.message = CONSTANTS.INVALID_APPLICATION_ID;
             }
             return res.json(resposeJson);
         } else {
             resposeJson.isSuccess = false;
-            resposeJson.message = 'Application id is not passed..';
+            resposeJson.message = CONSTANTS.APPLICATION_ID_NOT_PASSED;
             return res.json(resposeJson);
         }
     } catch (error) {
@@ -30,7 +30,7 @@ router.get('/:id', async (req, res, next) => {
         resposeJson.isSuccess = false;
         resposeJson.message = error;
 
-        if (MANY_CUST_ONE_ID.message === error) {
+        if (CUST_MORETHAN_ONE_CUSTID === error) {
             console.log('Error mactched...')
             return res.json(resposeJson);
         }
@@ -55,12 +55,12 @@ router.post('/updateMILand', async (req, res) => {
             };
             console.log('valid mi record');
             const response = await updateMILandDetails(miLandRec);
-            resposeJson.message = 'MI Land details updated successfully';
+            resposeJson.message = CONSTANTS.MI_UPDATE_SUCCESS;
             resposeJson.custRec.push(response);
             return res.json(resposeJson);
         } else {
             resposeJson.isSuccess = false;
-            resposeJson.message = 'Empty data is sent';
+            resposeJson.message = CONSTANTS.DATA_NOT_PASSED;
             return res.json(resposeJson);
         }
     } catch (err) {
@@ -87,13 +87,13 @@ router.post('/', async (req, res) => {
                 return res.json(resposeJson);
             }
             const response = await updateCustomerDetails(custRecUpdation);
-            resposeJson.message = 'Customer details updated successfully';
+            resposeJson.message = CONSTANTS.CUST_UPDATE_SUCCESS;
             resposeJson.custRec.push(response);
             console.log('cust rec updated');
             return res.json(resposeJson);
         }
         resposeJson.isSuccess = false;
-        resposeJson.message = 'Empty data is sent';
+        resposeJson.message = CONSTANTS.DATA_NOT_PASSED;
         res.json(resposeJson);
     } catch (error) {
         console.log('error while updating... : ', error);
