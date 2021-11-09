@@ -62,6 +62,8 @@ router.post('/', async (req, res, next) => {
         for (let k = 0; k < validCustArr.length; k++) {
             const validCustRec = validCustArr[k];
             try {
+                validCustRec.createdBy = req.adminName; // sets in middlware after verifying token
+                console.log('cust rec ', validCustRec);
                 const saveRecRes = await createCustomer(validCustRec);
                 console.log(k, 'Record Saved: ', saveRecRes._id);
             } catch (error) {

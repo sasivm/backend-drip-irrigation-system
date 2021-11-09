@@ -31,7 +31,7 @@ function verifyToken(req, res, next) {
             reponseJSON.message = CONSTANTS.INVALID_TOKEN;
             return res.status(401).json(reponseJSON);
         }
-
+        req.adminName = decodedPaylod.name;
         next();
     } catch (error) {
         console.log('Error while verifing token');

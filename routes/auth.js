@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
 
     try {
         const JWT_SEC_CODE = process.env.JWT_PRIVATE_KEY;
-        const payload = { _id: adminResponse._id };
+        const payload = { _id: adminResponse._id, name: adminResponse.firstName };
         const token = JWT.sign(payload, JWT_SEC_CODE);
 
         const adminObject = adminResponse.toObject(); // converting model to plain object
@@ -51,6 +51,8 @@ router.post('/login', async (req, res) => {
         resposeJson.message = CONSTANTS.LOGIN_SUCCESS_MESSAGE;
         resposeJson.token = token;
         resposeJson.adminRec = [adminObject];
+
+        console.log('Admin Logged In : ', adminObject.firstName);
         res.json(resposeJson);
     } catch (error) {
         console.log('Error while generating token');

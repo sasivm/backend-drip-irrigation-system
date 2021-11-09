@@ -16,7 +16,7 @@ const custSchema = new mangoose.Schema({
     aadhaarNo: { type: String, required: true },
     landOwnSon: { type: String, required: true },
     landOwnership: { type: String, required: true },
-    gender: { type: String, default: 'M' },
+    gender: { type: String, default: '' },
 
     miLandRec: { type: miLandSchema, required: true },
     updatedBy: { type: String, required: true },
@@ -30,7 +30,7 @@ async function updateMILandDetails(customerRec) {
         const resonse = await Customer.findByIdAndUpdate(customerRec._id, {
             $set: {
                 'miLandRec.cropLandType': customerRec.cropLandType,
-                'miLandRec.updatedBy': 'Sasi66',
+                'miLandRec.updatedBy': customerRec.updatedBy,
                 'miLandRec.updatedAt': Date.now()
             }
         }, { new: true, upsert: true });
@@ -54,7 +54,7 @@ async function updateCustomerDetails(customerRec) {
                 landOwnership: customerRec.landOwnership,
                 gender: customerRec.gender,
                 isCompleted: true,
-                updatedBy: 'Sasi66',
+                updatedBy: customerRec.updatedBy,
                 updatedAt: Date.now()
             }
         }, { new: true });
@@ -79,6 +79,21 @@ async function getCustomerDetails(applicationId) {
         return cusRec;
     } catch (error) {
         console.log('Error while retrive cust rec from Mongo db');
+        console.log(error);
+        return Promise.reject(error.message);
+    }
+}
+
+async function deleteCustomer(applicationId) {
+    try {
+        const response = await Customer.findOneAndRemove({ 'applicationId': applicationId });
+        if (response) {
+            console.log('deleted record - app-Id: ', response.applicationId, response);
+            return response;
+        }
+        return Promise.reject(Constants.INVALID_APPLICATION_ID);
+    } catch (error) {
+        console.log('Error while deleting cust rec in Mongo db');
         console.log(error);
         return Promise.reject(error.message);
     }
@@ -109,5 +124,6 @@ module.exports = {
     updateCustomerDetails,
     validateCustomerUpdation,
     Customer,
-    updateMILandDetails
+    updateMILandDetails,
+    deleteCustomer
 }

@@ -5,7 +5,8 @@ const CustomerSearch = mangoose.model('customers');
 
 async function findCustomersRecords(request) {
     try {
-        const response = await CustomerSearch.find(request);
+        console.log('search req', request);
+        const response = await CustomerSearch.find({ request });
         return response;
     } catch (error) {
         console.log('Error Stack of Mongo cust search');

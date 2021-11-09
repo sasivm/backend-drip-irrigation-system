@@ -1,5 +1,5 @@
-const CUST_REC_REQ_FIELDS = ['applicationId', 'block', 'department', 'district', 'farmerName', 'farmerType', 'gender', 'miCompany', 'mobileNo', 'socialStatus', 'village',
-    'miLandRec', 'surveyCropRec'];
+const CUST_REC_REQ_FIELDS = ['applicationId', 'block', 'department', 'district', 'farmerName', 'farmerType', 'fatherName', 'gender', 'miCompany', 'mobileNo', 'socialStatus', 'village',
+    'irrigationType', 'workOrderDate', 'miLandRec', 'surveyCropRec'];
 const CUST_FILE_DATA_INVALID = 'The Customers data excel file sent was not correct format'; // Not in array Format
 const CUST_FILE_DATA_EMPTY = 'The file sent was dont have any Customers details';
 const CUST_FILE_SAVED_SUCCESS = 'All the records are stored successfully in Database';
@@ -17,6 +17,7 @@ const APPLICATION_ID_NOT_PASSED = 'Application Id is not passed';
 const MI_UPDATE_SUCCESS = 'MI Land details updated successfully';
 const DATA_NOT_PASSED = 'The required data is not passed';
 const CUST_UPDATE_SUCCESS = 'Customer details updated successfully';
+const CUST_DELETE_SUCCESS = 'Customer record deleted successfully';
 const SEARCH_DATA_NOT_PASSED = 'Req doesnt have any valid query';
 
 const LOGIN_EMAIL_PASS_REQ = 'Email and Password are required';
@@ -35,7 +36,7 @@ module.exports = {
     CUST_EXIST_MESSAGE, CUST_MORETHAN_ONE_CUSTID, CUST_ID_INVALID_MESSAGE,
     CUST_PHONE_NO_INVALID_MESSAGE, CUST_SEARCH_SUCCESS_MESSAGE,
     APP_LISTENER_SUCCESS_MESSAGE, APP_UNKNOWN_ERROR_MESSAGE,
-    INVALID_APPLICATION_ID, APPLICATION_ID_NOT_PASSED,
+    INVALID_APPLICATION_ID, APPLICATION_ID_NOT_PASSED, CUST_DELETE_SUCCESS,
     MI_UPDATE_SUCCESS, DATA_NOT_PASSED, CUST_UPDATE_SUCCESS, SEARCH_DATA_NOT_PASSED,
     LOGIN_EMAIL_PASS_REQ, LOGIN_FAILED_MESSAGE, LOGIN_SUCCESS_MESSAGE,
     REG_EMAIL_EXIST, REG_SUCCESS_MESSAGE, UNAUTHORIZED_ACCESS, INVALID_TOKEN

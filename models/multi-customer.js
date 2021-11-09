@@ -3,8 +3,8 @@ const Joi = require('joi');
 const Constants = require('../util/constant');
 
 const miLandRecSchema = new mangoose.Schema({
-    cropType: { type: String, required: true },
-    miType: { type: String, required: true },
+    cropType: { type: String, required: true, uppercase: true },
+    miType: { type: String, required: true, uppercase: true },
     cropLandType: { type: String, required: false }
 });
 
@@ -13,25 +13,29 @@ const surveyCropRecSchema = new mangoose.Schema({
     subDivisionNo: { type: Array, required: true, min: 1 },
     totalArea: { type: Number, required: true, min: 0 },
     appliedArea: { type: Number, required: true, min: 0 },
-    crop: { type: String, required: true },
+    surveyAndSubDivNo: { type: String, required: true },
+    crop: { type: String, required: true, uppercase: true },
     spacing: { type: String, required: true }
 });
 
 const multCustomerRecSchema = new mangoose.Schema({
     applicationId: { type: String, required: true, unique: true },
-    block: { type: String, required: true },
+    block: { type: String, required: true, uppercase: true },
     department: { type: String, required: true },
-    district: { type: String, required: true },
-    farmerName: { type: String, required: true },
-    farmerType: { type: String, required: true },
+    district: { type: String, required: true, uppercase: true },
+    farmerName: { type: String, required: true, uppercase: true },
+    fatherName: { type: String, required: true, uppercase: true },
+    farmerType: { type: String, required: true, uppercase: true },
     gender: { type: String, min: 1, max: 1 },
     miCompany: { type: String, required: true },
     mobileNo: { type: String, required: true },
     socialStatus: { type: String, required: true },
-    village: { type: String, required: true },
+    village: { type: String, required: true, uppercase: true },
+    irrigationType: { type: String, required: true },
+    workOrderDate: { type: String, default: '' },
     miLandRec: { type: miLandRecSchema, required: true },
     surveyCropRec: { type: surveyCropRecSchema, required: true },
-    createdBy: { type: String, required: true, default: 'sk' },
+    createdBy: { type: String, required: true },
     updatedBy: { type: String, default: '' }
 }, {
     timestamps: true
@@ -69,6 +73,7 @@ function validateMultiCutomerRecordRegistartion(custRecData) {
         subDivisionNo: Joi.array().min(1).required(),
         totalArea: Joi.number().min(0).required(),
         appliedArea: Joi.number().min(0).required(),
+        surveyAndSubDivNo: Joi.string().required(),
 
         crop: Joi.string().min(1).required(),
         spacing: Joi.string().min(1).required()
@@ -82,12 +87,14 @@ function validateMultiCutomerRecordRegistartion(custRecData) {
         farmerName: Joi.string().min(3).required(),
         farmerType: Joi.string().min(1).required(), //Dropdown
         gender: Joi.number().min(1), //Dropdown
+        fatherName: Joi.string().required(),
         miCompany: Joi.string().min(1).required(),
         mobileNo: Joi.number().custom(phoneNumValidation),
         socialStatus: Joi.string().min(3).required(),
         village: Joi.string().min(3).required(),
-
-        // Mi land details
+        irrigationType: Joi.string().required(),
+        workOrderDate: Joi.string().allow('', null),
+        // Mi land and Survey details
         miLandRec: miLandJoiSchema.required().label('Mi Land Details'),
         surveyCropRec: surveyCropJoiSchema.required().label('Survey/Crop Details')
     });

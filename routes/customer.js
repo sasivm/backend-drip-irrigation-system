@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getCustomerDetails, validateCustomerUpdation, updateCustomerDetails, updateMILandDetails } = require('../models/customer');
+const { getCustomerDetails, validateCustomerUpdation, updateCustomerDetails, updateMILandDetails, deleteCustomer } = require('../models/customer');
 const CONSTANTS = require('../util/constant');
 
 router.get('/:id', async (req, res, next) => {
@@ -51,7 +51,8 @@ router.post('/updateMILand', async (req, res) => {
 
         if (cropLandType && _id) {
             const miLandRec = {
-                cropLandType, _id
+                cropLandType, _id,
+                updatedBy: req.adminName
             };
             console.log('valid mi record');
             const response = await updateMILandDetails(miLandRec);
@@ -86,6 +87,9 @@ router.post('/', async (req, res) => {
                 resposeJson.message = isInvalid;
                 return res.json(resposeJson);
             }
+
+            custRecUpdation.updatedBy = req.adminName;
+
             const response = await updateCustomerDetails(custRecUpdation);
             resposeJson.message = CONSTANTS.CUST_UPDATE_SUCCESS;
             resposeJson.custRec.push(response);
@@ -100,6 +104,33 @@ router.post('/', async (req, res) => {
         // resposeJson.isSuccess = false;
         // resposeJson.message = error;
         return res.status(400).json(error);
+    }
+});
+
+router.delete('/delete/:id', async (req, res) => {
+    const applicationId = req.params.id;
+    const resposeJson = {
+        message: '',
+        isSuccess: false,
+    };
+    if (!applicationId) {
+        resposeJson.message = CONSTANTS.APPLICATION_ID_NOT_PASSED;
+        return res.status(400).json(resposeJson);
+    }
+
+    try {
+        const response = await deleteCustomer(applicationId);
+        if (response) {
+            resposeJson.message = CONSTANTS.CUST_DELETE_SUCCESS;
+            resposeJson.isSuccess = true;
+            return res.status(200).json(resposeJson);
+        }
+        throw 'Some uncaught error occured';
+    } catch (error) {
+        console.log('error while deleting... : ', error);
+        resposeJson.message = error;
+        resposeJson.isSuccess = false;
+        return res.status(400).json(resposeJson);
     }
 
 });
