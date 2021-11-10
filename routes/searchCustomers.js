@@ -29,16 +29,29 @@ router.post('/', async (req, res) => {
         if (isAnyKeyValid) {
             const validReq = {};
             for (const key of reqKeys) {
-                if (searchReq[key]) {
+                if (searchReq[key]?.trim()) {
                     validReq[key] = searchReq[key];
                 }
             }
+
+            console.log('custRecord', validReq);
             const isInvalid = validateCustomersSearch(validReq);
+
             if (isInvalid) {
                 resposeJson.isSuccess = false;
                 resposeJson.message = isInvalid;
                 return res.json(resposeJson);
             }
+
+            // provides regExp for searching in string
+            const regExpFields = ['farmerName', 'fatherName', 'applicationId'];
+            for (const field of regExpFields) {
+                if (validReq?.hasOwnProperty(field)) {
+                    validReq[field] = new RegExp(validReq[field], 'i');
+                }
+            }
+
+            // console.log('reg exp', validReq);
             const custRecsRes = await findCustomersRecords(validReq);
             resposeJson.message = CONSTANTS.CUST_SEARCH_SUCCESS_MESSAGE;
             resposeJson.custRec = custRecsRes;
@@ -49,9 +62,9 @@ router.post('/', async (req, res) => {
             return res.json(resposeJson);
         }
     } catch (error) {
-        console.log('cust srch outer catch');
+        console.log('Uncaught-Error : cust srch outer catch', error);
         resposeJson.isSuccess = false;
-        resposeJson.message = error
+        resposeJson.message = error;
         return res.status(400).json(resposeJson);
     }
 });

@@ -86,9 +86,9 @@ async function getCustomerDetails(applicationId) {
 
 async function deleteCustomer(applicationId) {
     try {
-        const response = await Customer.findOneAndRemove({ 'applicationId': applicationId });
+        const response = await MultiCustomerRec.findOneAndRemove({ 'applicationId': applicationId });
         if (response) {
-            console.log('deleted record - app-Id: ', response.applicationId, response);
+            console.log('deleted record - app-Id: ', response.applicationId);
             return response;
         }
         return Promise.reject(Constants.INVALID_APPLICATION_ID);
@@ -101,7 +101,7 @@ async function deleteCustomer(applicationId) {
 
 function validateCustomerUpdation(custRecord) {
     const customerSchema = Joi.object({
-        aadhaarNo: Joi.string().min(4).required(),
+        aadhaarNo: Joi.string().length(12).required(),
         landOwnSon: Joi.string().min(1).required(),
         landOwnership: Joi.string().min(1).required(),
         gender: Joi.string().min(1).required(),

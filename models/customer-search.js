@@ -1,12 +1,11 @@
-const mangoose = require('mongoose');
 const Joi = require('joi');
 
-const CustomerSearch = mangoose.model('customers');
+const { MultiCustomerRec } = require('../models/multi-customer');
 
 async function findCustomersRecords(request) {
     try {
-        console.log('search req', request);
-        const response = await CustomerSearch.find({ request });
+        const response = await MultiCustomerRec.find(request);
+        console.log('found', response.length, 'record');
         return response;
     } catch (error) {
         console.log('Error Stack of Mongo cust search');
@@ -17,19 +16,19 @@ async function findCustomersRecords(request) {
 
 function validateCustomersSearch(custRecord) {
     const customerSchema = Joi.object({
-        applicationId: Joi.string(),
-        farmerName: Joi.string(),
-        farmerType: Joi.string(),
-        registeredBy: Joi.string(),
-        department: Joi.string(),
-        block: Joi.string(),
-        village: Joi.string()
+        applicationId: Joi.string().allow(''),
+        farmerName: Joi.string().allow(''),
+        farmerType: Joi.string().allow(''),
+        fatherName: Joi.string().allow(''),
+        department: Joi.string().allow(''),
+        block: Joi.string().allow(''),
+        village: Joi.string().allow('')
     });
 
     const { error } = customerSchema.validate(custRecord);
 
     if (error) {
-        console.log('... Error Ocuured...');
+        console.log('... Error Ocuured Cust Search validation...');
         console.log(error.message);
         return error.message;
     }
