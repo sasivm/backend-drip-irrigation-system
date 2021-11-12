@@ -6,22 +6,36 @@ const CONSTANTS = require('../util/constant');
 const verifyToken = require('../middleware/auth');
 
 const { Admin, adminValidation, adminLoginValidation } = require('../models/admin');
+const routeErrorHandler = require('../middleware/error-handler');
 
-router.post('/login', async (req, res) => {
+function isAdminLoginRequestValid(adminReq) {
+    if (!adminReq) {
+        return CONSTANTS.LOGIN_EMAIL_PASS_REQ;
+    }
+    if (!(adminReq.mail && adminReq.password)) {
+        return CONSTANTS.LOGIN_EMAIL_PASS_REQ;
+    }
+
+    const isAdminError = adminLoginValidation(adminReq);
+
+    if (isAdminError) {
+        return isAdminError;
+    }
+
+    return null;
+}
+
+router.post('/login', routeErrorHandler(async (req, res) => {
     const admin = req.body;
     const resposeJson = {
         message: '',
         isSuccess: false
     };
-    if (!(admin.mail && admin.password)) {
-        resposeJson.message = CONSTANTS.LOGIN_EMAIL_PASS_REQ;
-        return res.status(400).json(resposeJson);
-    }
 
-    const isAdminError = adminLoginValidation(admin);
+    const isAdminInvalid = isAdminLoginRequestValid(admin);
 
-    if (isAdminError) {
-        resposeJson.message = isAdminError;
+    if (isAdminInvalid) {
+        resposeJson.message = isAdminInvalid;
         return res.status(400).json(resposeJson);
     }
 
@@ -60,9 +74,9 @@ router.post('/login', async (req, res) => {
         resposeJson.message = CONSTANTS.APP_UNKNOWN_ERROR_MESSAGE;
         return res.status(400).json(resposeJson);
     }
-});
+}));
 
-router.post('/registration', verifyToken, async (req, res) => {
+router.post('/registration', verifyToken, routeErrorHandler(async (req, res) => {
     const adminProfile = req.body;
     const resposeJson = {
         message: '',
@@ -99,6 +113,6 @@ router.post('/registration', verifyToken, async (req, res) => {
     resposeJson.adminRec.push(admin);
     resposeJson.isSuccess = true;
     res.json(resposeJson);
-});
+}));
 
 module.exports = router;

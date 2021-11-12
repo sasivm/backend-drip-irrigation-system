@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
+const routeErrorHandler = require('../middleware/error-handler');
 const { getCustomerDetails, validateCustomerUpdation, updateCustomerDetails, updateMILandDetails, deleteCustomer } = require('../models/customer');
 const CONSTANTS = require('../util/constant');
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', routeErrorHandler(async (req, res, next) => {
     const resposeJson = {
         message: '',
         isSuccess: true,
@@ -38,9 +39,9 @@ router.get('/:id', async (req, res, next) => {
         return res.status(404).json(resposeJson);
     }
 
-});
+}));
 
-router.post('/updateMILand', async (req, res) => {
+router.post('/updateMILand', routeErrorHandler(async (req, res) => {
     const resposeJson = {
         message: '',
         isSuccess: true,
@@ -70,9 +71,9 @@ router.post('/updateMILand', async (req, res) => {
         // resposeJson.message = error;
         return res.status(400).json(err);
     }
-});
+}));
 
-router.post('/', async (req, res) => {
+router.post('/', routeErrorHandler(async (req, res) => {
     const resposeJson = {
         message: '',
         isSuccess: true,
@@ -105,9 +106,9 @@ router.post('/', async (req, res) => {
         // resposeJson.message = error;
         return res.status(400).json(error);
     }
-});
+}));
 
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', routeErrorHandler(async (req, res) => {
     const applicationId = req.params.id;
     const resposeJson = {
         message: '',
@@ -133,6 +134,6 @@ router.delete('/delete/:id', async (req, res) => {
         return res.status(400).json(resposeJson);
     }
 
-});
+}));
 
 module.exports = router;

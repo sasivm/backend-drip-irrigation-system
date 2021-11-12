@@ -25,6 +25,12 @@ app.use('/api/customer', verifyToken, cutomerRoute);
 app.use('/api/SearchCustomers', verifyToken, searchCustomersRoute);
 app.use('/api/auth', authRoute);
 
+app.use((err, req, res, next) => {
+    console.log('error-middleware executing...');
+    console.log('error info', err);
+    return res.status(500).json({ message: 'MongooseError' });
+});
+
 const PORT = process.env.APP_PORT;
 const DEFAULT_PORT = 5000;
 app.listen(PORT || default_port, () => {

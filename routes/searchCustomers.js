@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
+const routeErrorHandler = require('../middleware/error-handler');
 const { validateCustomersSearch, findCustomersRecords } = require('../models/customer-search');
 const CONSTANTS = require('../util/constant');
 
-router.post('/', async (req, res) => {
+router.post('/', routeErrorHandler(async (req, res) => {
     const resposeJson = {
         message: '',
         isSuccess: true,
@@ -67,6 +68,6 @@ router.post('/', async (req, res) => {
         resposeJson.message = error;
         return res.status(400).json(resposeJson);
     }
-});
+}));
 
 module.exports = router;
