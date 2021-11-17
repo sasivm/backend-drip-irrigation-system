@@ -1,5 +1,6 @@
 const mangoose = require('mongoose');
 const Joi = require('joi');
+const Constants = require('../util/constant');
 
 const adminSchema = new mangoose.Schema({
     mail: { type: String, required: true, unique: true },
@@ -16,18 +17,26 @@ function validateAdminProfile(adminProfile) {
         mail: Joi.string().email().required(),
         firstName: Joi.string().min(3).required(),
         lastName: Joi.string().allow('', null),
-        role: Joi.string().min(6),
+        role: Joi.string().min(5),
         password: Joi.string().min(6).required()
     });
 
-    const { error } = adminJOISchema.validate(adminProfile);
-    if (error) {
-        console.log('... Error Ocuured...');
-        console.log(error.message);
-        return error.message;
-    }
+    return schamaAndValueError(adminJOISchema, adminProfile);
+}
 
-    return null;
+async function updateAdminDocument(adminRecord) {
+    try {
+        const resonse = await Admin.findByIdAndUpdate(adminRecord._id,
+            { $set: adminRecord }, { new: true }
+        );
+        if (!resonse) {
+            return Promise.reject(Constants.ADMIN_ID_INVALID_MESSAGE);
+        }
+        return resonse;
+    } catch (error) {
+        console.log('Error while updting in db... : ', error)
+        return Promise.reject(error.message);
+    }
 }
 
 function validateAdminLogin(admin) {
@@ -36,7 +45,23 @@ function validateAdminLogin(admin) {
         password: Joi.string().min(6).required(),
     });
 
-    const { error } = loginSchema.validate(admin);
+    return schamaAndValueError(loginSchema, admin);
+}
+
+function updateAdminValidation(admin) {
+    const updateSchema = Joi.object({
+        _id: Joi.string().required(),
+        mail: Joi.string().email().required(),
+        firstName: Joi.string().min(3).required(),
+        lastName: Joi.string().allow('', null),
+        role: Joi.string().min(5)
+    });
+
+    return schamaAndValueError(updateSchema, admin);
+}
+
+function schamaAndValueError(schemaObject, valueObject) {
+    const { error } = schemaObject.validate(valueObject);
 
     if (error) {
         console.log('val error', error.message);
@@ -48,4 +73,6 @@ function validateAdminLogin(admin) {
 
 module.exports.Admin = Admin;
 module.exports.adminValidation = validateAdminProfile;
-module.exports.adminLoginValidation =validateAdminLogin;
+module.exports.adminLoginValidation = validateAdminLogin;
+module.exports.updateAdminValidation = updateAdminValidation;
+module.exports.updateAdminDocument = updateAdminDocument;

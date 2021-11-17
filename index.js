@@ -10,6 +10,7 @@ const bulkRegisterRoute = require('./routes/bulk-register');
 const cutomerRoute = require('./routes/customer');
 const searchCustomersRoute = require('./routes/searchCustomers');
 const authRoute = require('./routes/auth');
+const adminRoute = require('./routes/admin');
 
 const { APP_LISTENER_SUCCESS_MESSAGE } = require('./util/constant');
 
@@ -24,6 +25,8 @@ app.use('/api/bulkRegister', verifyToken, bulkRegisterRoute);
 app.use('/api/customer', verifyToken, cutomerRoute);
 app.use('/api/SearchCustomers', verifyToken, searchCustomersRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/admin', verifyToken, adminRoute);
+
 
 app.use((err, req, res, next) => {
     console.log('error-middleware executing...');
