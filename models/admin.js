@@ -6,7 +6,7 @@ const adminSchema = new mangoose.Schema({
     mail: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: false },
-    role: { type: String, default: 'admin3' },
+    role: { type: String, required: false },
     password: { type: String, required: false }
 });
 
@@ -71,8 +71,21 @@ function schamaAndValueError(schemaObject, valueObject) {
     return null;
 }
 
+async function findAdminsRecords(request) {
+    try {
+        const response = await Admin.find(request).select('_id firstName lastName mail');
+        console.log('found', response.length, 'record');
+        return response;
+    } catch (error) {
+        console.log('Error Stack of Mongo cust search');
+        console.log(error);
+        return Promise.reject(error.message);
+    }
+}
+
 module.exports.Admin = Admin;
 module.exports.adminValidation = validateAdminProfile;
 module.exports.adminLoginValidation = validateAdminLogin;
 module.exports.updateAdminValidation = updateAdminValidation;
 module.exports.updateAdminDocument = updateAdminDocument;
+module.exports.findAdmins = findAdminsRecords;

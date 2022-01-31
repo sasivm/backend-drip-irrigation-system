@@ -11,6 +11,7 @@ const cutomerRoute = require('./routes/customer');
 const searchCustomersRoute = require('./routes/searchCustomers');
 const authRoute = require('./routes/auth');
 const adminRoute = require('./routes/admin');
+const CONSTANTS = require('./util/constant');
 
 const { APP_LISTENER_SUCCESS_MESSAGE } = require('./util/constant');
 
@@ -30,8 +31,8 @@ app.use('/api/admin', verifyToken, adminRoute);
 
 app.use((err, req, res, next) => {
     console.log('error-middleware executing...');
-    console.log('error info', err);
-    return res.status(500).json({ message: 'MongooseError' });
+    console.log('error info ::: ', err);
+    return res.status(500).json({ message: CONSTANTS.SERVER_MIDDLEWARE_ERROR });
 });
 
 const PORT = process.env.APP_PORT;
