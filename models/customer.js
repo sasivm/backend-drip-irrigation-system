@@ -14,8 +14,7 @@ const custSchema = new mangoose.Schema({
 
     // New Fields for updation
     aadhaarNo: { type: String, required: true },
-    landOwnSon: { type: String, required: true },
-    landOwnership: { type: String, required: true },
+    sfmfCertNo: { type: String, required: true },
     gender: { type: String, default: '' },
 
     miLandRec: { type: miLandSchema, required: true },
@@ -50,8 +49,7 @@ async function updateCustomerDetails(customerRec) {
         const resonse = await Customer.findByIdAndUpdate(customerRec._id, {
             $set: {
                 aadhaarNo: customerRec.aadhaarNo,
-                landOwnSon: customerRec.landOwnSon,
-                landOwnership: customerRec.landOwnership,
+                sfmfCertNo: customerRec.sfmfCertNo,
                 gender: customerRec.gender,
                 isCompleted: true,
                 updatedBy: customerRec.updatedBy,
@@ -102,9 +100,8 @@ async function deleteCustomer(applicationId) {
 function validateCustomerUpdation(custRecord) {
     const customerSchema = Joi.object({
         aadhaarNo: Joi.string().length(12).required(),
-        landOwnSon: Joi.string().min(1).required(),
-        landOwnership: Joi.string().min(1).required(),
         gender: Joi.string().min(1).required(),
+        sfmfCertNo: Joi.string().min(1).required(),
         _id: Joi.string().min(1).required()
     });
 
