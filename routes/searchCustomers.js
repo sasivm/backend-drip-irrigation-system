@@ -45,7 +45,7 @@ router.post('/', routeErrorHandler(async (req, res) => {
             }
 
             // provides regExp for searching in string
-            const regExpFields = ['farmerName', 'fatherName', 'applicationId'];
+            const regExpFields = ['farmerName', 'fatherName', 'applicationId', 'village', 'block'];
             for (const field of regExpFields) {
                 if (validReq?.hasOwnProperty(field)) {
                     validReq[field] = new RegExp(validReq[field], 'i');

@@ -39,6 +39,21 @@ async function updateAdminDocument(adminRecord) {
     }
 }
 
+async function deleteAdmin(admin_id) {
+    try {
+        const response = await Admin.findByIdAndRemove({ '_id': admin_id });
+        if (response) {
+            console.log('deleted record - admin-Id: ', response._id);
+            return response;
+        }
+        return Promise.reject('Admin Id is invalid');
+    } catch (error) {
+        console.log('Error while deleting admin rec in Mongo db');
+        console.log(error);
+        return Promise.reject(error.message);
+    }
+}
+
 function validateAdminLogin(admin) {
     const loginSchema = Joi.object({
         mail: Joi.string().email().required(),
@@ -89,3 +104,4 @@ module.exports.adminLoginValidation = validateAdminLogin;
 module.exports.updateAdminValidation = updateAdminValidation;
 module.exports.updateAdminDocument = updateAdminDocument;
 module.exports.findAdmins = findAdminsRecords;
+module.exports.deleteAdmin = deleteAdmin;

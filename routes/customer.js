@@ -126,7 +126,7 @@ router.delete('/delete/:id', routeErrorHandler(async (req, res) => {
             resposeJson.isSuccess = true;
             return res.status(200).json(resposeJson);
         }
-        throw 'Some uncaught error occured';
+        throw CONSTANTS.UNCAUGHT_ERROR_MESSAGE;
     } catch (error) {
         console.log('error while deleting... : ', error);
         resposeJson.message = error;

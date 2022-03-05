@@ -115,4 +115,12 @@ router.post('/registration', verifyToken, routeErrorHandler(async (req, res) => 
     res.json(resposeJson);
 }));
 
+router.get('/token', verifyToken, routeErrorHandler(async (req, res) => {
+    const resposeJson = {
+        message: 'Token is vaild',
+        isSuccess: true,
+    };
+    return res.status(200).json(resposeJson);
+}));
+
 module.exports = router;

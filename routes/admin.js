@@ -1,8 +1,7 @@
 const express = require('express');
-const mangoose = require('mongoose');
 const router = express.Router();
 const CONSTANTS = require('../util/constant');
-const { updateAdminValidation, updateAdminDocument, findAdmins } = require('../models/admin');
+const { updateAdminValidation, updateAdminDocument, findAdmins, deleteAdmin } = require('../models/admin');
 const routeErrorHandler = require('../middleware/error-handler');
 
 router.post('/update', routeErrorHandler(async (req, res) => {
@@ -48,17 +47,17 @@ router.post('/search', routeErrorHandler(async (req, res) => {
         searchReq.mail = searchReq.email;
         delete searchReq.email;
 
-        for(let prop in searchReq) {
+        for (let prop in searchReq) {
             let value = searchReq[prop];
             value = value.trim();
-            if(value) {
+            if (value) {
                 searchReq[prop] = new RegExp(value, 'i');
             } else {
                 delete searchReq[prop]
             }
         }
-        
-        if(searchReq._id) {
+
+        if (searchReq._id) {
             searchReq._id = mongoose.Types.ObjectId.fromString(searchReq._id);
         } else {
             delete searchReq._id;
@@ -71,6 +70,32 @@ router.post('/search', routeErrorHandler(async (req, res) => {
     } catch (error) {
         console.log('error while admin searching... : ', error);
         return res.status(400).json(error);
+    }
+}));
+
+router.delete('/delete/:id', routeErrorHandler(async (req, res) => {
+    const admin_id = req.params.id ?? null;
+    const resposeJson = {
+        message: '',
+        isSuccess: false,
+    };
+    if (!admin_id) {
+        resposeJson.message = CONSTANTS.ADMIN_ID_INVALID_MESSAGE;;
+        return res.status(400).json(resposeJson);
+    }
+    try {
+        const response = await deleteAdmin(admin_id);
+        if (response) {
+            resposeJson.message = CONSTANTS.ADMIN_DELETE_SUCCESS;
+            resposeJson.isSuccess = true;
+            return res.status(200).json(resposeJson);
+        }
+        throw CONSTANTS.UNCAUGHT_ERROR_MESSAGE;
+    } catch (error) {
+        console.log('error while deleting admin... : ', error);
+        resposeJson.message = error;
+        resposeJson.isSuccess = false;
+        return res.status(400).json(resposeJson);
     }
 }));
 

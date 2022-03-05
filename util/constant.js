@@ -28,11 +28,13 @@ const REG_EMAIL_EXIST = 'Email already exist';
 const REG_SUCCESS_MESSAGE = 'Sub-Admin added successfully.';
 
 const ADMIN_ID_INVALID_MESSAGE = 'Admin Id is invalid';
-const ADMIN_UPDATE_SUCCESS = 'Admin details updated successfully';
+const ADMIN_UPDATE_SUCCESS = 'Admin record updated successfully';
+const ADMIN_DELETE_SUCCESS = 'Admin record deleted successfully';
 
 const UNAUTHORIZED_ACCESS = 'Unauthorize request';
 const INVALID_TOKEN = 'Unauthorize request - Token is invalid';
 
+const UNCAUGHT_ERROR_MESSAGE = 'Some uncaught error occured';
 const SERVER_MIDDLEWARE_ERROR = 'Some error occured in server side. Please check the server logs for more info.';
 
 module.exports = {
@@ -44,7 +46,7 @@ module.exports = {
     INVALID_APPLICATION_ID, APPLICATION_ID_NOT_PASSED, CUST_DELETE_SUCCESS,
     MI_UPDATE_SUCCESS, DATA_NOT_PASSED, CUST_UPDATE_SUCCESS, SEARCH_DATA_NOT_PASSED,
     LOGIN_EMAIL_PASS_REQ, LOGIN_FAILED_MESSAGE, LOGIN_SUCCESS_MESSAGE,
-    ADMIN_ID_INVALID_MESSAGE, ADMIN_UPDATE_SUCCESS,
+    ADMIN_ID_INVALID_MESSAGE, ADMIN_UPDATE_SUCCESS, ADMIN_DELETE_SUCCESS,
     REG_EMAIL_EXIST, REG_SUCCESS_MESSAGE, UNAUTHORIZED_ACCESS, INVALID_TOKEN,
-    SERVER_MIDDLEWARE_ERROR
+    UNCAUGHT_ERROR_MESSAGE, SERVER_MIDDLEWARE_ERROR
 };

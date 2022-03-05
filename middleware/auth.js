@@ -32,6 +32,7 @@ function verifyToken(req, res, next) {
             return res.status(401).json(reponseJSON);
         }
         req.adminName = decodedPaylod.name;
+        console.log('Token valid - passed');
         next();
     } catch (error) {
         console.log('Error while verifing token');
